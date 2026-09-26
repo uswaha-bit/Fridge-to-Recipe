@@ -56,4 +56,4 @@ python app.py
 
 ---
 
-Built as a hands-on project combining a fine-tuned deep learning model with an LLM in a deployed, end-to-end application.
+Built as a hands-on project combining a fine-tuned deep learning model with an LLM.
