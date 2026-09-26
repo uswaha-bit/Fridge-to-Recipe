@@ -1,22 +1,3 @@
-"""
-Fridge-to-Recipe App
----------------------
-Upload a photo of your fridge/pantry, and this app:
-  1. Runs a pretrained YOLOv8 object detection model (PyTorch, via Ultralytics)
-     to detect visible food items and draw bounding boxes on the photo
-  2. Lets you review/edit the detected ingredient list (detectors aren't perfect --
-     COCO's default classes only cover ~15 food-related categories)
-  3. Sends the final ingredient list to Gemini to generate matching recipe suggestions
-
-Run locally:
-    export GEMINI_API_KEY="your-key-here"
-    python app.py
-
-Deploy on Hugging Face Spaces:
-    - Add GEMINI_API_KEY as a "Secret" in the Space settings (never hard-code it)
-    - Push this file + requirements.txt to the Space repo
-    - The YOLOv8 weights (yolov8n.pt) download automatically on first run
-"""
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -25,12 +6,9 @@ from PIL import Image
 from ultralytics import YOLO
 import gradio as gr
 
-GEMINI_MODEL_NAME = "gemini-3.8-flash"  # check ai.google.dev if this is deprecated later
+GEMINI_MODEL_NAME = "gemini-3.8-flash"
 
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
-# Fine-tuned on the AICook dataset (30 common fridge ingredients) via transfer
-# learning from the pretrained yolov8n.pt COCO weights. mAP50: 0.961 on the
-# validation set. See finetune_yolov8_fridge.ipynb for the training process.
 detector = YOLO("fridge_yolov8n_best.pt")
 
 
